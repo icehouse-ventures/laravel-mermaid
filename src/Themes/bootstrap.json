@@ -1,0 +1,12 @@
+{
+  "theme": "base",
+  "themeName": "Bootstrap Inspired",
+  "themeVariables": {
+    "primaryColor": "#e9ecef",
+    "primaryBorderColor": "#343a40",
+    "primaryTextColor": "#212529",
+    "lineColor": "#6c757d",
+    "secondaryColor": "#6c757d",
+    "tertiaryColor": "#fff"
+  } 
+}

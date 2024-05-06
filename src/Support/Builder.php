@@ -9,12 +9,12 @@ class Builder
 {
 
     // Entry point for generating a diagram from an array
-    public static function generateDiagramFromArray(array $data, ?string $type = null): string
+    public static function generateDiagramFromArray(array $data, ?string $type = null, ?array $options = []): string
     {
         
         $diagram = self::formatArrayToLines($data);
         $diagram = self::setDiagramType($type) . $diagram;
-        
+        $diagram = self::setTheme(config('mermaid.theme')) . $diagram;
         return $diagram;
     }
 
@@ -30,11 +30,43 @@ class Builder
         return ($type ?? "graph LR") . ";\n";
     }
 
+    // Set the theme for the diagram
+    public static function setTheme(string $theme): string
+    {
+        $theme = config('mermaid.theme');
+    
+        if (in_array($theme, ['base', 'forest', 'dark', 'neutral', 'default'])) {
+            return "%%{\n  
+            init: {\"theme\": \"$theme\"}
+            }%%\n";
+        }
+
+        if ($theme === 'custom') {
+            $themeFile = config('mermaid.themeFile');
+        }
+
+        if (!file_exists(__DIR__ . '/../Themes/' . $themeFile)) {
+            return null;
+        }
+        
+        $themeConfig = json_decode(file_get_contents(__DIR__ . '/../Themes/' . $themeFile), true);
+        
+        $themeJson = json_encode($themeConfig);
+        
+        $themeString = 
+            "%%{\n  
+            init: $themeJson
+            }%%\n";
+        
+        return $themeString;
+    }
+
     // Entry point for generating a diagram from a collection of models
-    public static function generateDiagramFromCollection(Collection $models, ?string $label = null, ?string $type = null): string
+    public static function generateDiagramFromCollection(Collection $models, ?string $label = null, ?string $type = null, ?array $options = []): string
     {
         $diagram = self::formatCollectionToLines($models, $label);
         $diagram = self::setDiagramType($type) . $diagram;
+        $diagram = self::setTheme(config('mermaid.theme')) . $diagram;
         
         return $diagram;
     }
@@ -42,7 +74,6 @@ class Builder
     // Format the eloquent models into lines to match the mermaid data format
     protected static function formatCollectionToLines(Collection $models, ?string $label = null, $parentModel = null): string
     {
-        
         $lines = [];
     
         foreach ($models as $model) {

@@ -10,33 +10,12 @@ return [
     |
     */
 
-    'theme' => 'default',
+    // Mermaid theme to use for the diagram. Options: 'default', 'forest', 'dark', 'neutral', 'base' or to a custom theme file in the themes directory set to custom
+    'theme' => 'custom',
 
-    'themeVariables' => [
-        'primaryColor' => '#BB2528',
-    ],
+    // Custom theme file to use for the diagram. Must be a valid JSON file in the themes directory. Package comes with a bootstrap.json and tailwind.json theme files
+    'themeFile' => 'tailwind.json',
 
-    'flowchart' => [
-        'useMaxWidth' => false,
-        'htmlLabels' => true,
-    ],
-
-    'sequence' => [
-        'showSequenceNumbers' => true,
-    ],
-
-    'gantt' => [
-        'axisFormat' => '%m/%d/%Y',
-    ],
-
-    'class' => [
-        'defaultRenderer' => 'dagre',
-    ],
-
-    'git' => [
-        'showBranches' => true,
-        'showCommitLabel' => true,
-    ],
 ];
 
 

@@ -1,0 +1,16 @@
+{
+  "theme": "base",
+  "themeName": "Tailwind Inspired",
+  "themeVariables": {
+    "primaryColor": "#f3f4f6",
+    "primaryBorderColor": "#4b5563",
+    "primaryTextColor": "#1f2937",
+    "lineColor": "#9ca3af", 
+    "secondaryColor": "#6b7280",
+    "tertiaryColor": "#fff",
+    "mainBkg": "#f9fafb",
+    "secondBkg": "#f3f4f6",
+    "mainContrastColor": "#1f2937",
+    "darkTextColor": "#1f2937"
+  }
+}

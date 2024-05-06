@@ -196,6 +196,7 @@ php artisan vendor:publish --provider="IcehouseVentures\LaravelMermaid\LaravelMe
 
 This will create a `mermaid.php` file in your `config` directory. For example the configuration file allows you to set the default theme for the Mermaid diagrams. The default theme is `default` but you can change this to `forest`, `dark`, `neutral` or `base`. 
 
+By default the package uses a Tailwind inspired theme. You can change the theme by updating the `theme` key in the configuration file.
 
 ## Background
 Icehouse Ventures is an early-stage venture capital firm based in New Zealand. We have an in-house technology platform built using Laravel and created this package to help streamline the generation of flowcharts, process diagrams and data visualisations inside our application using dynamic data. 
