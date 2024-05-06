@@ -32,30 +32,33 @@ class Builder
     }
 
     // Entry point for generating a diagram from a collection of models
-    public static function generateDiagramFromCollection(Collection $models, ?string $type = null): string
+    public static function generateDiagramFromCollection(Collection $models, ?string $label = null, ?string $type = null): string
     {
-        $diagram = self::formatCollectionToLines($models);
+        $diagram = self::formatCollectionToLines($models, $label);
         $diagram = self::setDiagramType($type) . $diagram;
         
         return $diagram;
     }
 
     // Format the eloquent models into lines to match the mermaid data format
-    protected static function formatCollectionToLines(Collection $models, $parentModel = null): string
+    protected static function formatCollectionToLines(Collection $models, ?string $label = null, $parentModel = null): string
     {
+        
         $lines = [];
     
         foreach ($models as $model) {
-            $key = $model->getKey();
-            $label = $model->getNameAttribute();
+            
             $className = class_basename($model);
+            $key = $model->getKey();
+            $modelLabel = $label ? $model->{$label} : $model->getNameAttribute() ?? $className.' '.$key;
     
-            //Parent model object
-            $lines[] = "{$className}{$key}[$label];\n";
+            // Object node
+            $lines[] = "{$className}{$key}[$modelLabel];\n";
     
             if ($parentModel !== null) {
                 $parentKey = $parentModel->getKey();
                 $parentClassName = class_basename($parentModel);
+                // Relationship
                 $lines[] = "{$parentClassName}{$parentKey} --> {$className}{$key};\n";
             }
     
@@ -63,15 +66,15 @@ class Builder
                 // hasOne or belongsTo or morphOne
                 if ($relation instanceof Model) {
                     $relatedKey = $relation->getKey();
-                    $relatedLabel = $relation->getNameAttribute();
+                    $relatedLabel = $label ? $relation->{$label} : $relation->getNameAttribute() ?? $relation->getKey();
                     $relatedClassName = class_basename($relation);
-    
+
                     $lines[] = "{$relatedClassName}{$relatedKey}[$relatedLabel];\n";
                     $lines[] = "{$className}{$key} --> {$relatedClassName}{$relatedKey};\n";
                 } 
                 // hasMany or belongsToMany or morphMany
                 elseif ($relation instanceof Collection) {
-                    $lines[] = self::formatCollectionToLines($relation, $model);
+                    $lines[] = self::formatCollectionToLines($relation, $label, $model);
                 }
             }
         }

@@ -41,14 +41,13 @@ The package provides a Blade component that you can use to generate Mermaid diag
         C-->D;
 ```
 ## Passing Data to the Blade Component
-You can pass data directly to the Blade component using the `data` attribute. The data should be an array of strings that represent the Mermaid diagram. Here is an example of how you can pass data to the
-Blade component:
+You can pass data directly to the Blade component using the `data` attribute. The data should be a string that represent the Mermaid diagram. Here is an example of how you can pass data to the Blade component. You'll need to use the Mermaid syntax to generate the diagram using this method. 
 
 ```php
 // In your controller
 public function index()
 {
-    $data = [
+    $data = 
         'graph LR;
             A[Label 1];
             A-->B;
@@ -57,8 +56,7 @@ public function index()
             B-->D;
             C[Label 3];
             C-->D;
-            D[Label 4];'
-    ];
+            D[Label 4];';
 
     return view('your-view', compact('data'));
 }
@@ -80,7 +78,7 @@ public function index()
 ```
 
 ## Passing an Array to the Blade Component
-Laravel and php provide a lot of helpers and convinience methods for working with arrays. You can pass an array into the Mermaid Blade component using the Generate Diagram From Array method. The package will automatically convert the array to a single string to generate the Mermaid diagram. Here is an example of how you can pass an array to the Blade component:
+Laravel and php provide a lot of helpers and convinience methods for working with arrays. If you want to create dynamic diagrams from your business data, then an array is a more dynamic data format to pass into the Mermaid digram. You can pass an array into the Mermaid Blade component using the Generate Diagram From Array method. The package will automatically convert the array to a single string to generate the Mermaid diagram. Here is an example of how you can pass an array to the Blade component:
 
 ```php
 // In your controller
@@ -113,7 +111,7 @@ public function index()
 
 
 ## Passing in an Eloquent Collection
-You can also pass in an Eloquent collection to the Blade component. The package will automatically convert the collection to an array of strings that represent the Mermaid diagram using the Generate Diagram From Collection method. Here is an example of how you can pass an Eloquent collection to the Blade component:
+You can also pass in an Eloquent collection to the Blade component. This allows you to visualise complex business data and relationships straight from your Eloquent models and their relationships. The package will automatically convert the collection to an array of strings that represent the Mermaid diagram using the Generate Diagram From Collection method. Here is an example of how you can pass an Eloquent collection to the Blade component:
 
 ```php
 // In your controller
