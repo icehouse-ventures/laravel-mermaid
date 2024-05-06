@@ -28,7 +28,6 @@ class Builder
     protected static function setDiagramType(?string $type): string
     {
         return ($type ?? "graph LR") . ";\n";
-
     }
 
     // Entry point for generating a diagram from a collection of models

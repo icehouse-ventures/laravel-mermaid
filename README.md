@@ -109,7 +109,6 @@ public function index()
             C-->D;
 ```
 
-
 ## Passing in an Eloquent Collection
 You can also pass in an Eloquent collection to the Blade component. This allows you to visualise complex business data and relationships straight from your Eloquent models and their relationships. The package will automatically convert the collection to an array of strings that represent the Mermaid diagram using the Generate Diagram From Collection method. Here is an example of how you can pass an Eloquent collection to the Blade component:
 
@@ -141,6 +140,53 @@ public function index()
             Post3[Post 2];
 
 ```
+## Custom collections, models and relationships
+You can also pass in custom collections, models and relationships to the Blade component by flattening the data into an array, then using the array method in the package to generate the diagram. This method is useful if you want more complex dynamic data such as links or custom formatting.
+
+
+```php
+$users = User::with('posts')->take(3)->get();
+
+$data = [];
+$data[] = "classDef user fill:#e0f2fe,stroke:#bae6fd,stroke-width:4px";
+$data[] = "classDef post fill:#f0fdf4,stroke:#86efac,stroke-width:4px,color:#1e3a8a,stroke-dasharray: 5 5";
+
+foreach ($users as $user) {
+    $data[] = "U{$user->id}((<a href="route('user.show', $user)">$user->name</a>))";
+
+    foreach ($user->posts as $post) {
+        $data[] = "P{$post->id}[<a href="route('post.show', $post)">$post->title</a>]";
+        $data[] = "U{$user->id} --> P{$post->id}";
+    }
+}
+
+$data[] = "class U1,U2 user";
+$data[] = "class P1,P2,P3 post";
+$data[] = "linkStyle default stroke:#94a3b8,stroke-width:4px";
+
+$data = app('mermaid')->generateDiagramFromArray($data);
+```
+
+```mermaid
+    graph TD;
+        classDef user fill:#e0f2fe,stroke:#bae6fd,stroke-width:4px;
+        classDef post fill:#f0fdf4,stroke:#86efac,stroke-width:4px,color:#1e3a8a,stroke-dasharray: 5 5;
+        
+        U1((<a href="https//www.laravel.com">User 1</a>));
+        P1[<a href="https//www.laravel.com">Post 1</a>];
+        U1 --> P1;
+        U2((<a href="https//www.laravel.com">User 2</a>));
+        P2[<a href="https//www.laravel.com">Post 2</a>];
+        U2 --> P2;
+        U2 --> P3;
+        P3[<a href="https//www.laravel.com">Post 3</a>];
+        
+        class U1,U2 user;
+        class P1,P2,P3 post;
+        linkStyle default stroke:#94a3b8,stroke-width:4px;
+```
+
+
 ## Configuration
 You can publish the configuration file using the following command:
 
