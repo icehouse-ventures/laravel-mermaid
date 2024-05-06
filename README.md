@@ -25,14 +25,57 @@ composer require icehouse-ventures/laravel-mermaid
 The package provides a Blade component that you can use to generate Mermaid diagrams in your views. Here is an example of how you can use the Blade component to generate a simple flowchart diagram:
 
 ```php
-<x-mermaid::mermaid>
+<x-mermaid::component>
     graph TD;
         A-->B;
         A-->C;
         B-->D;
         C-->D;
-</x-mermaid::mermaid>
+</x-mermaid::component>
 ```
+
+## Passing Data to the Blade Component
+You can pass data to the Blade component using the `data` attribute. The data should be an array of strings that represent the Mermaid diagram. Here is an example of how you can pass data to the
+Blade component:
+
+```php
+// In your controller
+public function index()
+{
+    $data = [
+        'graph TD;
+            A-->B;
+            A-->C;
+            B-->D;
+            C-->D;'
+    ];
+
+    return view('your-view', compact('data'));
+}
+
+// Your page blade file
+<x-mermaid::component :data="$data" />
+```
+
+## Passing in an Eloquent Collection
+You can also pass in an Eloquent collection to the Blade component. The package will automatically convert the collection to an array of strings that represent the Mermaid diagram. Here is an example of how you can pass an Eloquent collection to the Blade component:
+
+```php
+// In your controller
+public function index()
+{
+    $collection = User::with('posts')->get();
+    
+    $data = app('mermaid')->generateDiagramFromCollection($collection);
+    
+    return view('your-view', compact('data'));
+}
+
+// Your page blade file
+<x-mermaid::component :data="$data" />
+```
+
+
 ## Background
 Icehouse Ventures is an early-stage venture capital firm based in New Zealand. We have an in-house technology platform built using Laravel and created this package to help streamline the generation of flowcharts, process diagrams and data visualisations inside our application using dynamic data. 
 

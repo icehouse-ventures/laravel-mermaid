@@ -9,13 +9,9 @@ class ServiceProvider extends LaravelServiceProvider
 {
     public function boot()
     {
-
         $this->loadViewsFrom(__DIR__ . '/resources/views', 'mermaid');
 
-        $this->loadViewComponentsAs('mermaid', [
-            'mermaid::mermaid' => 'mermaid::mermaid',
-        ]);
-
+        
         $this->publishes([
             __DIR__ . '/../Config/mermaid.php' => config_path('mermaid.php'),
         ], 'laravel-mermaid-config');
@@ -26,7 +22,7 @@ class ServiceProvider extends LaravelServiceProvider
     {
         $this->mergeConfigFrom(__DIR__ . '/../Config/mermaid.php', 'mermaid');
 
-        $this->app->singleton('mermaid', function () {
+        $this->app->bind('mermaid', function () {
             return new Builder();
         });
     }
