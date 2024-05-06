@@ -22,7 +22,7 @@ composer require icehouse-ventures/laravel-mermaid
 ```
 
 ## Blade Component 
-The package provides a Blade component that you can use to generate Mermaid diagrams in your views. Here is an example of how you can use the Blade component to generate a simple flowchart diagram:
+The package provides a Blade component that you can use to generate Mermaid diagrams in your views. Here is an example of how you can use the Blade component to generate a simple flowchart diagram. The component can be wrapped around any standard Mermaid diagram string (similar to Markdown strings).
 
 ```php
 <x-mermaid::component>
@@ -33,9 +33,15 @@ The package provides a Blade component that you can use to generate Mermaid diag
         C-->D;
 </x-mermaid::component>
 ```
-
+```mermaid
+  graph TD;
+        A-->B;
+        A-->C;
+        B-->D;
+        C-->D;
+```
 ## Passing Data to the Blade Component
-You can pass data to the Blade component using the `data` attribute. The data should be an array of strings that represent the Mermaid diagram. Here is an example of how you can pass data to the
+You can pass data directly to the Blade component using the `data` attribute. The data should be an array of strings that represent the Mermaid diagram. Here is an example of how you can pass data to the
 Blade component:
 
 ```php
@@ -43,11 +49,15 @@ Blade component:
 public function index()
 {
     $data = [
-        'graph TD;
+        'graph LR;
+            A[Label 1];
             A-->B;
             A-->C;
+            B[Label 2];
             B-->D;
-            C-->D;'
+            C[Label 3];
+            C-->D;
+            D[Label 4];'
     ];
 
     return view('your-view', compact('data'));
@@ -57,8 +67,53 @@ public function index()
 <x-mermaid::component :data="$data" />
 ```
 
+```mermaid
+  graph LR;
+            A[Label 1];
+            A-->B;
+            A-->C;
+            B[Label 2];
+            B-->D;
+            C[Label 3];
+            C-->D;
+            D[Label 4];
+```
+
+## Passing an Array to the Blade Component
+Laravel and php provide a lot of helpers and convinience methods for working with arrays. You can pass an array into the Mermaid Blade component using the Generate Diagram From Array method. The package will automatically convert the array to a single string to generate the Mermaid diagram. Here is an example of how you can pass an array to the Blade component:
+
+```php
+// In your controller
+public function index()
+{
+    $data = [
+        'A-->B',
+        'A-->C',
+        'B-->D',
+        'C-->D'
+    ];
+
+    app('mermaid')->generateDiagramFromArray($data);
+
+    return view('your-view', compact('data'));
+}
+
+// Your page blade file
+<x-mermaid::component :data="$data" />
+```
+
+
+```mermaid
+    graph TD;
+            A-->B;
+            A-->C;
+            B-->D;
+            C-->D;
+```
+
+
 ## Passing in an Eloquent Collection
-You can also pass in an Eloquent collection to the Blade component. The package will automatically convert the collection to an array of strings that represent the Mermaid diagram. Here is an example of how you can pass an Eloquent collection to the Blade component:
+You can also pass in an Eloquent collection to the Blade component. The package will automatically convert the collection to an array of strings that represent the Mermaid diagram using the Generate Diagram From Collection method. Here is an example of how you can pass an Eloquent collection to the Blade component:
 
 ```php
 // In your controller
@@ -74,6 +129,28 @@ public function index()
 // Your page blade file
 <x-mermaid::component :data="$data" />
 ```
+
+```mermaid
+    graph LR;
+            User1[User 1];
+            User1-->Post1;
+            User1-->Post2;
+            Post1[Post 1];
+            User2[User 2];
+            User2-->Post2;
+            Post2[Post 2];
+            User2-->Post3;
+            Post3[Post 2];
+
+```
+## Configuration
+You can publish the configuration file using the following command:
+
+```bash
+php artisan vendor:publish --provider="IcehouseVentures\LaravelMermaid\LaravelMermaidServiceProvider" --tag="config"
+```
+
+This will create a `mermaid.php` file in your `config` directory. For example the configuration file allows you to set the default theme for the Mermaid diagrams. The default theme is `default` but you can change this to `forest`, `dark`, `neutral` or `base`. 
 
 
 ## Background

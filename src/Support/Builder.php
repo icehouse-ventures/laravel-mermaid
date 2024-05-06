@@ -9,7 +9,7 @@ class Builder
 {
 
     // Entry point for generating a diagram from an array
-    public static function generateDiagram(array $data, ?string $type = null): string
+    public static function generateDiagramFromArray(array $data, ?string $type = null): string
     {
         
         $diagram = self::formatArrayToLines($data);
@@ -71,7 +71,7 @@ class Builder
                 } 
                 // hasMany or belongsToMany or morphMany
                 elseif ($relation instanceof Collection) {
-                    $lines[] = self::formatModelsToLines($relation, $model);
+                    $lines[] = self::formatCollectionToLines($relation, $model);
                 }
             }
         }

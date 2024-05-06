@@ -1,5 +1,5 @@
 <div class="mermaid">
-    {{ $data }}
+    {{ isset($data) ? $data : $slot }}
 </div>
 
 @once
