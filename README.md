@@ -5,11 +5,18 @@ Simple Mermaid diagrams for Laravel applications. Laravel Mermaid is a package t
 Mermaid is a powerful digram and charting library that provides a syntax similar to markdown to generate data visualisations. Mermaid is now supported inside Github markdown and natively inside Notion pages so it is a familar syntax for business users. 
 
 ```mermaid
+%%{init: {'theme': 'neutral' } }%%
   graph TD;
-      1[Install Laravel Mermaid Package]-->2;
-      2[Prepare Formatted Data]-->3;
-      3[Insert Blade Component]-->4;
-      4[Diagram Shown to User];
+      1[Install Laravel Mermaid Package];
+      2[Prepare Static Formatted Data];
+      3[Pull Dynamic Data from Database];
+      4[Insert Blade Presentation Component];
+      5[Diagram Shown to User];
+      1 --> 2;
+      1 --> 3;
+      2 --> 4;
+      3 --> 4;
+      4 --> 5;
 ```
 You can find out more about the Mermaid JS library at https://mermaid.js.org
 
