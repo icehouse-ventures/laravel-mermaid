@@ -41,9 +41,7 @@ class Builder
             }%%\n";
         }
 
-        if ($theme === 'custom') {
-            $themeFile = config('mermaid.themeFile');
-        }
+        $themeFile = config('mermaid.themeFile');
 
         if (!file_exists(__DIR__ . '/../Themes/' . $themeFile)) {
             return null;

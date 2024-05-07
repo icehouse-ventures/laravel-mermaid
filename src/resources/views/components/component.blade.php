@@ -1,4 +1,4 @@
-<div class="mermaid">
+<div class="mermaid {{ $class ?? '' }}">
     {{ isset($data) ? $data : $slot }}
 </div>
 

@@ -13,14 +13,14 @@ class ServiceProvider extends LaravelServiceProvider
 
         
         $this->publishes([
-            __DIR__ . '/../Config/mermaid.php' => config_path('mermaid.php'),
-        ], 'laravel-mermaid-config');
+            __DIR__ . '/../config/mermaid.php' => config_path('mermaid.php'),
+        ], 'config');
 
     }
 
     public function register()
     {
-        $this->mergeConfigFrom(__DIR__ . '/../Config/mermaid.php', 'mermaid');
+        $this->mergeConfigFrom(__DIR__ . '/../config/mermaid.php', 'mermaid');
 
         $this->app->bind('mermaid', function () {
             return new Builder();
