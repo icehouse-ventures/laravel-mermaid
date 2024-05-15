@@ -11,7 +11,6 @@ class ServiceProvider extends LaravelServiceProvider
     {
         $this->loadViewsFrom(__DIR__ . '/resources/views', 'mermaid');
 
-        
         $this->publishes([
             __DIR__ . '/../config/mermaid.php' => config_path('mermaid.php'),
         ], 'config');
