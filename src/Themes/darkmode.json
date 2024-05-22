@@ -1,0 +1,12 @@
+{
+  "theme": "base",
+  "themeName": "Dark Mode",
+  "themeVariables": {
+    "primaryColor": "#212529",
+    "primaryBorderColor": "#343a40",
+    "primaryTextColor": "#f8f9fa",
+    "lineColor": "#000000",
+    "secondaryColor": "#495057",
+    "tertiaryColor": "#212529"
+  } 
+}

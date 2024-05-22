@@ -1,9 +1,13 @@
 <div class="mermaid {{ $class ?? '' }}">
-    {{ isset($data) ? $data : $slot }}
+    @if(isset($data))
+    {{ $data }}
+    @else
+        {{ \IcehouseVentures\LaravelMermaid\Support\Builder::setTheme($theme ?? '') }}
+        {{ $slot }}
+    @endif
 </div>
 
 @once
-    
     <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
 
     <script>
@@ -11,5 +15,4 @@
             startOnLoad: true
         });
     </script>
-
 @endonce

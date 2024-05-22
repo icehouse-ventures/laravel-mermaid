@@ -31,9 +31,9 @@ class Builder
     }
 
     // Set the theme for the diagram
-    public static function setTheme(string $theme): string
+    public static function setTheme(?string $theme = null): ?string
     {
-        $theme = config('mermaid.theme');
+        $theme = $theme ?? config('mermaid.theme');
     
         if (in_array($theme, ['base', 'forest', 'dark', 'neutral', 'default'])) {
             return "%%{\n  
@@ -41,13 +41,17 @@ class Builder
             }%%\n";
         }
 
-        $themeFile = config('mermaid.themeFile');
+        $themeFile = $theme ?? config('mermaid.themeFile');
+        
+        $themeFileExtension = str_ends_with($themeFile, '.json') ? $themeFile : $themeFile.'.json';
+        
+        $themeFilePath = __DIR__ . '/../Themes/' . $themeFileExtension;
 
-        if (!file_exists(__DIR__ . '/../Themes/' . $themeFile)) {
+        if (!file_exists($themeFilePath)) {
             return null;
         }
         
-        $themeConfig = json_decode(file_get_contents(__DIR__ . '/../Themes/' . $themeFile), true);
+        $themeConfig = json_decode(file_get_contents($themeFilePath), true);
         
         $themeJson = json_encode($themeConfig);
         

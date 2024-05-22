@@ -195,7 +195,7 @@ $data = app('mermaid')->generateDiagramFromArray($data);
 
 
 ## Configuration
-You can publish the configuration file using the following command:
+You can customize the Mermaid configuration by publishing the `mermaid.php` config file and changing the settings as needed. You can publish the configuration file using the following command:
 
 ```bash
 php artisan vendor:publish --provider="IcehouseVentures\LaravelMermaid\ServiceProvider" --tag="config"
@@ -210,6 +210,47 @@ You can also set the canvas style for the Mermaid diagram by passing in a class 
 
 ```php
 <x-mermaid::component :data="$data" class="border rounded p-2" />
+```
+
+## Livewire
+
+This package includes a Livewire compatible component that will re-render a diagram when a property on your Livewire component is updated. Here's an example of using this in a Livewire component when when you increase the 'limit', more users will be loaded and added to the diagram.
+
+```php
+
+// Your Livewire Class:
+<?php
+
+namespace App\Livewire;
+
+use App\Models\User;
+use Livewire\Component;
+
+class Mermaid extends Component
+{
+    public $limit = 2;
+
+    public $mermaid;
+
+    public function render()
+    {
+        $this->mermaid = app('mermaid')->generateDiagramFromCollection(
+            User::with('posts')->limit($this->limit)->get()
+        );
+
+        return view('livewire.mermaid');
+    }
+}
+
+// Your Livewire View:
+<div>
+    <x-mermaid::livewire-component wire:model="mermaid" />
+
+    <div>
+        <label for="limit">Limit:</label>
+        <input wire:model.live="limit" id="limit" type="number">
+    </div>
+</div>
 ```
 
 
