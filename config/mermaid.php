@@ -10,14 +10,13 @@ return [
     |
     */
 
-    // Mermaid theme to use for the diagram. Options: 'default', 'forest', 'dark', 'neutral', 'base' or to a custom theme file in the themes directory set to custom
+    // Mermaid theme to use for the diagram.
+    // First Party Mermaid themes: 'default', 'forest', 'dark', 'neutral', 'base'.
+    // To a custom theme file in the themes directory set to 'custom'.
     'theme' => 'custom',
 
-    // Custom theme file to use for the diagram. Must be a valid JSON file in the themes directory. Package comes with a bootstrap.json and tailwind.json theme files
-    'themeFile' => 'tailwind.json',
-
+    // Custom theme file to use for the diagram.
+    // Must be a valid JSON file in the themes directory.
+    // Laravel Mermaid Package comes with 'bootstrap', 'tailwind', 'darkmode',
+    'themeFile' => 'tailwind',
 ];
-
-
-
-
