@@ -86,7 +86,7 @@ class Builder
 
             $className = class_basename($model);
             $key = $model->getKey();
-            $modelLabel = $label ? $model->{$label} : $model->getNameAttribute() ?? $className.' '.$key;
+            $modelLabel = $label ? $model->{$label} : $model->name ?? $className.' '.$key;
 
             // Object node
             $lines[] = "{$className}{$key}[$modelLabel];\n";
@@ -102,7 +102,7 @@ class Builder
                 // hasOne or belongsTo or morphOne
                 if ($relation instanceof Model) {
                     $relatedKey = $relation->getKey();
-                    $relatedLabel = $label ? $relation->{$label} : $relation->getNameAttribute() ?? $relation->getKey();
+                    $relatedLabel = $label ? $relation->{$label} : $relation->name ?? $relation->getKey();
                     $relatedClassName = class_basename($relation);
 
                     $lines[] = "{$relatedClassName}{$relatedKey}[$relatedLabel];\n";
