@@ -25,7 +25,10 @@
         "laravel": {
             "providers": [
                 "IcehouseVentures\\LaravelMermaid\\ServiceProvider"
-            ]
+            ],
+            "aliases": {
+                "Chartjs": "IcehouseVentures\\LaravelMermaid\\Facades\\Mermaid"
+            }
         }
     }
 }

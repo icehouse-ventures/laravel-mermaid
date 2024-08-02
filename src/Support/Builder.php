@@ -8,8 +8,17 @@ use Illuminate\Support\Str;
 
 class Builder
 {
+    /**
+     * @return Builder
+     */
+    public function build() {
+        return new self();
+    }
 
-    // Entry point for generating a diagram from an array
+    /**
+     * Generate a diagram from a PHP array
+     * @return string
+     */
     public static function generateDiagramFromArray(array $data, ?string $type = null, ?array $options = []): string
     {
         $diagram = self::formatArrayToLines($data);
@@ -18,19 +27,29 @@ class Builder
         return $diagram;
     }
 
-    // Format the array to lines to match markdown and mermaid format
+    /**
+     * Format an array into lines
+     * @return string
+     */
     protected static function formatArrayToLines(array $data): string
     {
         return Collection::make($data)->map(fn($item) => "$item;\n")->join('');
     }
 
     // Set the diagram type to the mermaid diagram type
+    /**
+     * Set the Mermaid diagram type ('graph LR', 'graph TD' etc)
+     * @return string
+     */
     protected static function setDiagramType(?string $type): string
     {
         return ($type ?? "graph LR") . ";\n";
     }
 
-    // Set the theme for the diagram
+    /**
+     * Set the diagram theme
+     * @return string
+     */
     public static function setTheme(?string $theme = null): ?string
     {
         if (empty($theme)) {
@@ -67,7 +86,10 @@ class Builder
         return $themeString;
     }
 
-    // Entry point for generating a diagram from a collection of models
+    /**
+     * Generate a diagram from a Collection of models
+     * @return string
+     */
     public static function generateDiagramFromCollection(Collection $models, ?string $label = null, ?string $type = null, ?array $options = []): string
     {
         $diagram = self::formatCollectionToLines($models, $label);
@@ -77,7 +99,10 @@ class Builder
         return $diagram;
     }
 
-    // Format the eloquent models into lines to match the mermaid data format
+    /**
+     * Iterate the Eloquent models and convert to Mermaid lines
+     * @return string
+     */
     protected static function formatCollectionToLines(Collection $models, ?string $label = null, $parentModel = null): string
     {
         $lines = [];
@@ -86,7 +111,7 @@ class Builder
 
             $className = class_basename($model);
             $key = $model->getKey();
-            $modelLabel = $label ? $model->{$label} : $model->getNameAttribute() ?? $className.' '.$key;
+            $modelLabel = $label ? $model->{$label} : $model->name ?? $className.' '.$key;
 
             // Object node
             $lines[] = "{$className}{$key}[$modelLabel];\n";
@@ -102,7 +127,7 @@ class Builder
                 // hasOne or belongsTo or morphOne
                 if ($relation instanceof Model) {
                     $relatedKey = $relation->getKey();
-                    $relatedLabel = $label ? $relation->{$label} : $relation->getNameAttribute() ?? $relation->getKey();
+                    $relatedLabel = $label ? $relation->{$label} : $relation->name ?? $relation->getKey();
                     $relatedClassName = class_basename($relation);
 
                     $lines[] = "{$relatedClassName}{$relatedKey}[$relatedLabel];\n";

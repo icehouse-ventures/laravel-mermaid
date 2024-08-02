@@ -89,6 +89,8 @@ Laravel and php provide a lot of helpers and convinience methods for working wit
 
 ```php
 // In your controller
+use IcehouseVentures\LaravelMermaid\Facades\Mermaid;
+
 public function index()
 {
     $data = [
@@ -98,7 +100,7 @@ public function index()
         'C-->D'
     ];
 
-    app('mermaid')->generateDiagramFromArray($data);
+    Mermaid::build()->generateDiagramFromArray($data);
 
     return view('your-view', compact('data'));
 }
@@ -121,11 +123,13 @@ You can also pass in an Eloquent collection to the Blade component. This allows 
 
 ```php
 // In your controller
+use IcehouseVentures\LaravelMermaid\Facades\Mermaid;
+
 public function index()
 {
     $collection = User::with('posts')->get();
     
-    $data = app('mermaid')->generateDiagramFromCollection($collection);
+    $data = Mermaid::build()->generateDiagramFromCollection($collection);
     
     return view('your-view', compact('data'));
 }
@@ -152,6 +156,8 @@ You can also pass in custom collections, models and relationships to the Blade c
 
 
 ```php
+use IcehouseVentures\LaravelMermaid\Facades\Mermaid;
+
 $users = User::with('posts')->take(3)->get();
 
 $data = [];
@@ -171,7 +177,7 @@ $data[] = "class U1,U2 user";
 $data[] = "class P1,P2,P3 post";
 $data[] = "linkStyle default stroke:#94a3b8,stroke-width:4px";
 
-$data = app('mermaid')->generateDiagramFromArray($data);
+$data = Mermaid::build()->generateDiagramFromArray($data);
 ```
 
 ```mermaid
@@ -225,6 +231,7 @@ namespace App\Livewire;
 
 use App\Models\User;
 use Livewire\Component;
+use IcehouseVentures\LaravelMermaid\Facades\Mermaid;
 
 class Mermaid extends Component
 {
@@ -234,7 +241,7 @@ class Mermaid extends Component
 
     public function render()
     {
-        $this->mermaid = app('mermaid')->generateDiagramFromCollection(
+        $this->mermaid = Mermaid::build()->generateDiagramFromCollection(
             User::with('posts')->limit($this->limit)->get()
         );
 
