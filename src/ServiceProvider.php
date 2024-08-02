@@ -27,7 +27,7 @@ class ServiceProvider extends LaravelServiceProvider
         });
 
         // @note This new interface allows usage via facade `IcehouseVentures\LaravelMermaid\Facades\Mermaid::build()->generateDiagramFromArray();`
-        $this->app->singleton('mermaid', function() {
+        $this->app->singleton('mermaid-facade', function() {
             return new Builder();
         });
     }
