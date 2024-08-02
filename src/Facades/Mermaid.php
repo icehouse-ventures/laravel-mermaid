@@ -11,6 +11,6 @@ class Mermaid extends Facade
     */
     protected static function getFacadeAccessor()
     {
-        return 'mermaid';
+        return 'mermaid-facade';
     }
 }
