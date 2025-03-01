@@ -8,11 +8,20 @@
 </div>
 
 @once
-    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js" defer></script>
 
     <script>
-        mermaid.initialize({
-            startOnLoad: true
-        });
+      function initMermaid() {
+        if (typeof mermaid === 'undefined') {
+          setTimeout(initMermaid, 100);
+          return;
+        }
+
+        mermaid.initialize({ startOnLoad: true });
+        mermaid.contentLoaded();
+      }
+
+      document.addEventListener('DOMContentLoaded', initMermaid);
+      document.addEventListener('livewire:navigated', initMermaid);
     </script>
 @endonce
