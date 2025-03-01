@@ -1,5 +1,5 @@
 # laravel-mermaid
-Simple Mermaid diagrams for Laravel applications. Laravel Mermaid is a package that allows you to easily generate Mermaid diagrams in your Laravel applications. Diagram types include flowcharts, user journeys, entity relationship diagrams and mind maps. 
+Simple Mermaid diagrams for Laravel applications. Laravel Mermaid is a package that allows you to easily generate Mermaid diagrams in your Laravel applications. Diagram types include flowcharts, user journeys, entity relationship diagrams, business process diagrams and mind maps. 
 
 ## Mermaid Diagrams
 Mermaid is a powerful digram and charting library that provides a syntax similar to markdown to generate data visualisations. Mermaid is now supported inside Github markdown and natively inside Notion pages so it is a familar syntax for business users. 
@@ -219,8 +219,7 @@ You can also set the canvas style for the Mermaid diagram by passing in a class 
 ```
 
 ## Livewire
-
-This package includes a Livewire compatible component that will re-render a diagram when a property on your Livewire component is updated. Here's an example of using this in a Livewire component when when you increase the 'limit', more users will be loaded and added to the diagram.
+This package includes a Livewire compatible component that will re-render a diagram when a property on your Livewire component is updated. This allows you to create dynamic interactive diagrams and visualisations that can be updated when a user interacts with your application. Here's an example of using this in a Livewire component when when you increase the 'limit', more users will be loaded and added to the diagram.
 
 ```php
 
