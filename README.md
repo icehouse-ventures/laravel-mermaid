@@ -28,7 +28,7 @@ You can install the package via composer:
 composer require icehouse-ventures/laravel-mermaid
 ```
 
-## Blade Component 
+## Quickstart: Blade Component Slot
 The package provides a Blade component that you can use to generate Mermaid diagrams in your views. Here is an example of how you can use the Blade component to generate a simple flowchart diagram. The component can be wrapped around any standard Mermaid diagram string (similar to Markdown strings).
 
 ```php
@@ -47,7 +47,7 @@ The package provides a Blade component that you can use to generate Mermaid diag
         B-->D;
         C-->D;
 ```
-## Passing Data to the Blade Component
+## Passing mermaid syntax to the Blade Component using the Data Attribute
 You can pass data directly to the Blade component using the `data` attribute. The data should be a string that represent the Mermaid diagram. Here is an example of how you can pass data to the Blade component. You'll need to use the Mermaid syntax to generate the diagram using this method. 
 
 ```php
