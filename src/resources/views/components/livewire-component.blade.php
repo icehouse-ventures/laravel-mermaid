@@ -3,7 +3,7 @@
 </div>
 
 @assets
-    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script src="{{ config('mermaid.cdn') }}"></script>
 @endassets
 
 @script
@@ -12,18 +12,22 @@
         init() {
             mermaid.initialize({
                 startOnLoad: false,
-            });
+                securityLevel: @js(config('mermaid.securityLevel', 'strict')),
+            })
 
             this.$watch('$wire.{{ $attributes->wire('model')->value() }}', () => {
-                this.render();
-            });
+                this.render()
+            })
 
-            this.render();
+            this.render()
         },
         async render() {
-            const { svg } = await mermaid.render('graph-{{ $this->id() }}', this.$wire.{{ $attributes->wire('model')->value() }});
-            this.$refs.target.innerHTML = svg;
+            const { svg } = await mermaid.render(
+                'graph-{{ $this->id() }}',
+                this.$wire.{{ $attributes->wire('model')->value() }}
+            )
+            this.$refs.target.innerHTML = svg
         }
-    }));
+    }))
 </script>
 @endscript

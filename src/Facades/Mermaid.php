@@ -7,9 +7,9 @@ use Illuminate\Support\Facades\Facade;
 class Mermaid extends Facade
 {
     /**
-    * @method static \IcehouseVentures\LaravelMermaid\Support\Builder build()
-    */
-    protected static function getFacadeAccessor()
+     * @method static \IcehouseVentures\LaravelMermaid\Support\Builder build()
+     */
+    protected static function getFacadeAccessor(): string
     {
         return 'mermaid-facade';
     }

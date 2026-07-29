@@ -1,24 +1,29 @@
 # laravel-mermaid
-Simple Mermaid diagrams for Laravel applications. Laravel Mermaid is a package that allows you to easily generate Mermaid diagrams in your Laravel applications. Diagram types include flowcharts, user journeys, entity relationship diagrams, business process diagrams and mind maps. 
+Simple Mermaid diagrams for Laravel applications. Laravel Mermaid generates flowcharts, user journeys, entity relationship diagrams, business process diagrams, mind maps, and the other diagram types supported by Mermaid 11.
+
+The current release supports PHP 8.2+ and Laravel 12 or 13.
 
 ## Mermaid Diagrams
-Mermaid is a powerful digram and charting library that provides a syntax similar to markdown to generate data visualisations. Mermaid is now supported inside Github markdown and natively inside Notion pages so it is a familar syntax for business users. 
+Mermaid is a diagramming and charting library with a Markdown-like syntax for generating data visualisations. Mermaid diagrams are also supported in GitHub Markdown and Notion, making the syntax familiar to many users.
 
 ```mermaid
-%%{init: {'theme': 'neutral' } }%%
-  graph TD;
-      1[Install Laravel Mermaid Package];
-      2[Prepare Static Formatted Data];
-      3[Pull Dynamic Data from Database];
-      4[Insert Blade Presentation Component];
-      5[Diagram Shown to User];
-      1 --> 2;
-      1 --> 3;
-      2 --> 4;
-      3 --> 4;
-      4 --> 5;
+---
+config:
+  theme: neutral
+---
+graph TD;
+    1[Install Laravel Mermaid Package];
+    2[Prepare Static Formatted Data];
+    3[Pull Dynamic Data from Database];
+    4[Insert Blade Presentation Component];
+    5[Diagram Shown to User];
+    1 --> 2;
+    1 --> 3;
+    2 --> 4;
+    3 --> 4;
+    4 --> 5;
 ```
-You can find out more about the Mermaid JS library at https://mermaid.js.org
+You can find out more in the [Mermaid documentation](https://mermaid.js.org).
 
 ## Installation
 
@@ -47,8 +52,8 @@ The package provides a Blade component that you can use to generate Mermaid diag
         B-->D;
         C-->D;
 ```
-## Passing mermaid syntax to the Blade Component using the Data Attribute
-You can pass data directly to the Blade component using the `data` attribute. The data should be a string that represent the Mermaid diagram. Here is an example of how you can pass data to the Blade component. You'll need to use the Mermaid syntax to generate the diagram using this method. 
+## Passing Mermaid syntax to the Blade component
+You can pass a Mermaid diagram string directly to the component using the `data` attribute.
 
 ```php
 // In your controller
@@ -85,7 +90,7 @@ public function index()
 ```
 
 ## Passing an Array to the Blade Component
-Laravel and php provide a lot of helpers and convinience methods for working with arrays. If you want to create dynamic diagrams from your business data, then an array is a more dynamic data format to pass into the Mermaid digram. You can pass an array into the Mermaid Blade component using the Generate Diagram From Array method. The package will automatically convert the array to a single string to generate the Mermaid diagram. Here is an example of how you can pass an array to the Blade component:
+Laravel and PHP provide convenient helpers for working with arrays. The builder converts an array of Mermaid statements into a diagram string:
 
 ```php
 // In your controller
@@ -100,7 +105,7 @@ public function index()
         'C-->D'
     ];
 
-    Mermaid::build()->generateDiagramFromArray($data);
+    $data = Mermaid::build()->generateDiagramFromArray($data);
 
     return view('your-view', compact('data'));
 }
@@ -165,10 +170,10 @@ $data[] = "classDef user fill:#e0f2fe,stroke:#bae6fd,stroke-width:4px";
 $data[] = "classDef post fill:#f0fdf4,stroke:#86efac,stroke-width:4px,color:#1e3a8a,stroke-dasharray: 5 5";
 
 foreach ($users as $user) {
-    $data[] = "U{$user->id}((<a href="route('user.show', $user)">$user->name</a>))";
+    $data[] = "U{$user->id}(({$user->name}))";
 
     foreach ($user->posts as $post) {
-        $data[] = "P{$post->id}[<a href="route('post.show', $post)">$post->title</a>]";
+        $data[] = "P{$post->id}[{$post->title}]";
         $data[] = "U{$user->id} --> P{$post->id}";
     }
 }
@@ -185,14 +190,14 @@ $data = Mermaid::build()->generateDiagramFromArray($data);
         classDef user fill:#e0f2fe,stroke:#bae6fd,stroke-width:4px;
         classDef post fill:#f0fdf4,stroke:#86efac,stroke-width:4px,color:#1e3a8a,stroke-dasharray: 5 5;
         
-        U1((<a href="https//www.laravel.com">User 1</a>));
-        P1[<a href="https//www.laravel.com">Post 1</a>];
+        U1((User 1));
+        P1[Post 1];
         U1 --> P1;
-        U2((<a href="https//www.laravel.com">User 2</a>));
-        P2[<a href="https//www.laravel.com">Post 2</a>];
+        U2((User 2));
+        P2[Post 2];
         U2 --> P2;
         U2 --> P3;
-        P3[<a href="https//www.laravel.com">Post 3</a>];
+        P3[Post 3];
         
         class U1,U2 user;
         class P1,P2,P3 post;
@@ -207,9 +212,18 @@ You can customize the Mermaid configuration by publishing the `mermaid.php` conf
 php artisan vendor:publish --provider="IcehouseVentures\LaravelMermaid\ServiceProvider" --tag="config"
 ```
 
-This will create a `mermaid.php` file in your `config` directory. For example the configuration file allows you to set the default theme for the Mermaid diagrams. The default theme is `default` but you can change this to `forest`, `dark`, `neutral` or `base`. 
+This creates `config/mermaid.php`. Set `theme` to `default`, `forest`, `dark`, `neutral`, `base`, or `custom`.
 
-By default the package uses a Tailwind inspired theme. You can change the theme by updating the `theme` key in the configuration file.
+By default the package uses its Tailwind-inspired custom theme. When `theme` is `custom`, select `bootstrap`, `tailwind`, or `darkmode` with `themeFile`.
+
+The bundled browser runtime is pinned to Mermaid major version 11:
+
+```php
+'cdn' => 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js',
+'securityLevel' => 'strict',
+```
+
+You can replace `cdn` with an exact version, a self-hosted asset, or an approved internal CDN. Keep `securityLevel` set to `strict` unless every diagram and HTML label is trusted.
 
 ## Canvas Style
 You can also set the canvas style for the Mermaid diagram by passing in a class to the Blade component. This allows you to style the diagram using your own CSS. 
@@ -219,7 +233,10 @@ You can also set the canvas style for the Mermaid diagram by passing in a class 
 ```
 
 ## Livewire
-This package includes a Livewire compatible component that will re-render a diagram when a property on your Livewire component is updated. This allows you to create dynamic interactive diagrams and visualisations that can be updated when a user interacts with your application. Here's an example of using this in a Livewire component when when you increase the 'limit', more users will be loaded and added to the diagram.
+This package includes a Livewire-compatible component that re-renders a diagram
+when a component property changes. The current release and demo application are
+tested with Livewire 4. In this example, increasing the `limit` loads more users
+into the diagram.
 
 ```php
 
@@ -232,7 +249,7 @@ use App\Models\User;
 use Livewire\Component;
 use IcehouseVentures\LaravelMermaid\Facades\Mermaid;
 
-class Mermaid extends Component
+class MermaidDiagram extends Component
 {
     public $limit = 2;
 
@@ -261,7 +278,24 @@ class Mermaid extends Component
 
 
 ## Background
-Icehouse Ventures is an early-stage venture capital firm based in New Zealand. We have an in-house technology platform built using Laravel and created this package to help streamline the generation of flowcharts, process diagrams and data visualisations inside our application using dynamic data. 
+Icehouse Ventures created this package for dynamic diagrams in Laravel and now
+maintains it with its community of contributors.
+
+## Contributing
+
+Contributions from first-time and returning contributors are welcome. Bug
+reproductions, new diagram examples, documentation fixes, tests, accessibility
+improvements, and compatibility updates are all useful. Open an issue for a
+design discussion or send a focused pull request for a well-understood change.
+
+## Development
+
+```bash
+composer install
+composer check
+```
+
+`composer check` runs Pint, PHPStan and the Pest test suite. GitHub Actions exercises Laravel 12–13 across PHP 8.2–8.5.
 
 ## License
 
