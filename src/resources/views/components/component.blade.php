@@ -1,6 +1,6 @@
 <div class="mermaid {{ $class ?? '' }}">
     @if(isset($data))
-    {{ $data }}
+        {{ $data }}
     @else
         {{ \IcehouseVentures\LaravelMermaid\Support\Builder::setTheme($theme ?? '') }}
         {{ $slot }}
@@ -8,20 +8,34 @@
 </div>
 
 @once
-    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js" defer></script>
+    <script src="{{ config('mermaid.cdn') }}" defer></script>
 
     <script>
-      function initMermaid() {
+      async function initLaravelMermaid() {
         if (typeof mermaid === 'undefined') {
-          setTimeout(initMermaid, 100);
-          return;
+          window.setTimeout(initLaravelMermaid, 100);
+          return
         }
 
-        mermaid.initialize({ startOnLoad: true });
-        mermaid.contentLoaded();
+        if (!window.laravelMermaidInitialized) {
+          mermaid.initialize({
+            startOnLoad: false,
+            securityLevel: @js(config('mermaid.securityLevel', 'strict')),
+          })
+          window.laravelMermaidInitialized = true
+        }
+
+        await mermaid.run({
+          querySelector: '.mermaid:not([data-processed="true"])',
+        })
       }
 
-      document.addEventListener('DOMContentLoaded', initMermaid);
-      document.addEventListener('livewire:navigated', initMermaid);
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initLaravelMermaid)
+      } else {
+        initLaravelMermaid()
+      }
+
+      document.addEventListener('livewire:navigated', initLaravelMermaid)
     </script>
 @endonce

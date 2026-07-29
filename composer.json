@@ -1,7 +1,13 @@
 {
     "name": "icehouse-ventures/laravel-mermaid",
     "description": "Simple package to generate diagrams in Laravel using the Mermaid.js library",
-    "keywords": ["laravel", "mermaid", "diagram", "flowchart", "icehouseventures"],
+    "keywords": [
+        "laravel",
+        "mermaid",
+        "diagram",
+        "flowchart",
+        "icehouseventures"
+    ],
     "license": "MIT",
     "authors": [
         {
@@ -10,8 +16,13 @@
         }
     ],
     "require": {
-        "php": ">=5.6.4",
-        "illuminate/support": "^6.0 || ^7.0 || ^8.0 || ^9.0 || ^10.0 || ^11.0 || ^12.0 || ^13.0"
+        "php": "^8.2",
+        "illuminate/database": "^12.0|^13.0",
+        "illuminate/support": "^12.0|^13.0",
+        "illuminate/view": "^12.0|^13.0"
+    },
+    "suggest": {
+        "livewire/livewire": "Required for reactive diagram components; release-tested with Livewire 4."
     },
     "autoload": {
         "psr-4": {
@@ -24,8 +35,37 @@
                 "IcehouseVentures\\LaravelMermaid\\ServiceProvider"
             ],
             "aliases": {
-                "Chartjs": "IcehouseVentures\\LaravelMermaid\\Facades\\Mermaid"
+                "Mermaid": "IcehouseVentures\\LaravelMermaid\\Facades\\Mermaid"
             }
         }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "IcehouseVentures\\LaravelMermaid\\Tests\\": "tests/"
+        }
+    },
+    "require-dev": {
+        "laravel/pint": "^1.30",
+        "orchestra/testbench": "^10.11|^11.1",
+        "pestphp/pest": "^3.8|^4.7|^5.0",
+        "pestphp/pest-plugin-laravel": "^3.2|^4.1|^5.0",
+        "phpstan/phpstan": "^2.2"
+    },
+    "scripts": {
+        "analyse": "phpstan analyse src --level=8 --no-progress",
+        "check": [
+            "@lint",
+            "@analyse",
+            "@test"
+        ],
+        "format": "pint",
+        "lint": "pint --test",
+        "test": "pest tests"
+    },
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        },
+        "sort-packages": true
     }
 }
